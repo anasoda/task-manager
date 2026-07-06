@@ -33,6 +33,10 @@ header {
     position: sticky;
     top: 0;
     z-index: 10;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
 }
 
 .brand {
@@ -333,3 +337,49 @@ dl.meta dd { margin: 0; }
 }
 
 .btn-danger:hover { background: #fef2f2; }
+
+
+/* Auth nav (login/logout/register) */
+.auth-nav {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.auth-nav a {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.88rem;
+    font-weight: 500;
+    transition: color 0.15s ease;
+}
+
+.auth-nav a:hover {
+    color: var(--primary);
+}
+
+.auth-user {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--text);
+}
+
+.logout-form {
+    margin: 0;
+}
+
+.logout-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    color: var(--text-muted);
+    font-size: 0.88rem;
+    font-weight: 500;
+    font-family: inherit;
+    cursor: pointer;
+    transition: color 0.15s ease;
+}
+
+.logout-btn:hover {
+    color: var(--danger);
+}

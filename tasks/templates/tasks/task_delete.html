@@ -1,0 +1,20 @@
+{% extends "tasks/base.html" %}
+
+{% block title %}Delete Task{% endblock %}
+
+{% block content %}
+    <a class="back-link" href="{% url 'task-detail' task.pk %}">&larr; Back to task</a>
+
+    <div class="task-card">
+        <h1>Delete task</h1>
+        <p class="description">Are you sure you want to delete "{{ task }}"? This can't be undone.</p>
+
+        <form method="POST">
+            {% csrf_token %}
+            <div class="form-actions">
+                <button type="submit" class="btn btn-danger">Confirm delete</button>
+                <a class="btn btn-secondary" href="{% url 'task-detail' task.pk %}">Cancel</a>
+            </div>
+        </form>
+    </div>
+{% endblock %}

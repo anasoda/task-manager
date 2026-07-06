@@ -1,0 +1,23 @@
+{% extends "tasks/base.html" %}
+
+{% block title %}Tasks{% endblock %}
+
+{% block content %}
+    <div class="page-header">
+        <h1>Tasks</h1>
+        <a class="btn btn-primary" href="{% url 'task-create' %}">+ Add task</a>
+    </div>
+
+    <ul class="task-list">
+        {% for task in tasks %}
+            <li class="task {% if task.is_completed %}completed{% endif %}">
+                <a class="task-title" href="{% url 'task-detail' task.pk %}">{{ task.title }}</a>
+                <span class="status {% if task.is_completed %}done{% else %}pending{% endif %}">
+                    {% if task.is_completed %}Done{% else %}Pending{% endif %}
+                </span>
+            </li>
+        {% empty %}
+            <li class="empty">No tasks yet.</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

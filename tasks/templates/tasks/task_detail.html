@@ -1,0 +1,37 @@
+{% extends "tasks/base.html" %}
+
+{% block title %}{{ task.title }}{% endblock %}
+
+{% block content %}
+    <a class="back-link" href="{% url 'task-list' %}">&larr; Back to tasks</a>
+
+    <div class="task-card">
+        <div class="task-card-header">
+            <h1>{{ task.title }}</h1>
+            <span class="status {% if task.is_completed %}done{% else %}pending{% endif %}">
+                {% if task.is_completed %}Done{% else %}Pending{% endif %}
+            </span>
+        </div>
+
+        <p class="description">{{ task.description|default:"No description provided." }}</p>
+
+        <dl class="meta">
+            <dt>ID</dt>
+            <dd>{{ task.pk }}</dd>
+            
+            <dt>Due date</dt>
+            <dd>{{ task.due_date|default:"—" }}</dd>
+
+            <dt>Created</dt>
+            <dd>{{ task.created_at }}</dd>
+
+            <dt>Last updated</dt>
+            <dd>{{ task.updated_at }}</dd>
+        </dl>
+
+        <div class="task-card-actions form-actions">
+            <a class="btn btn-primary" href="{% url 'task-update' task.pk %}">Edit task</a>
+            <a class="btn btn-danger" href="{% url 'task-delete' task.pk %}">Delete task</a>
+        </div>
+    </div>
+{% endblock %}

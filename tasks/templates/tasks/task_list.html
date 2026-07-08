@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% block title %}Tasks{% endblock %}
+{% block main_class %}main-wide{% endblock %}
 
 {% block content %}
     <div class="page-header">
@@ -8,16 +9,125 @@
         <a class="btn btn-primary" href="{% url 'task-create' %}">+ Add task</a>
     </div>
 
+    <div class="stats-grid">
+        <div class="stat-card">
+            <span class="stat-value">{{ stats.total }}</span>
+            <span class="stat-label">Total</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-value">{{ stats.completed }}</span>
+            <span class="stat-label">Completed</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-value">{{ stats.pending }}</span>
+            <span class="stat-label">Pending</span>
+        </div>
+        <div class="stat-card {% if stats.overdue %}stat-card-danger{% endif %}">
+            <span class="stat-value">{{ stats.overdue }}</span>
+            <span class="stat-label">Overdue</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-value">{{ stats.due_today }}</span>
+            <span class="stat-label">Due today</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-value">{{ stats.completion_percentage }}%</span>
+            <span class="stat-label">Completion</span>
+        </div>
+    </div>
+
+    <form method="get" class="filter-bar">
+        <input type="text" name="q" value="{{ search }}" placeholder="Search title or description...">
+
+        <select name="status">
+            <option value="">All statuses</option>
+            {% for value, label in status_choices %}
+                <option value="{{ value }}" {% if selected_status == value %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+        </select>
+
+        <select name="priority">
+            <option value="">All priorities</option>
+            {% for value, label in priority_choices %}
+                <option value="{{ value }}" {% if selected_priority == value %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+        </select>
+
+        <select name="category">
+            <option value="">All categories</option>
+            {% for category in categories %}
+                <option value="{{ category.pk }}" {% if selected_category == category.pk|stringformat:"s" %}selected{% endif %}>{{ category.name }}</option>
+            {% endfor %}
+        </select>
+
+        <label class="filter-checkbox">
+            <input type="checkbox" name="overdue" value="1" {% if overdue_only %}checked{% endif %}>
+            Overdue only
+        </label>
+
+        <input type="hidden" name="sort" value="{{ sort }}">
+        <button type="submit" class="btn btn-secondary">Apply</button>
+        <a href="{% url 'task-list' %}" class="btn btn-secondary">Reset</a>
+    </form>
+
+    <div class="sort-bar">
+        <span>Sort by</span>
+        <a class="{% if sort == 'due_date' %}active{% endif %}" href="?{{ filters_querystring }}{% if filters_querystring %}&{% endif %}sort=due_date">Due date &uarr;</a>
+        <a class="{% if sort == '-due_date' %}active{% endif %}" href="?{{ filters_querystring }}{% if filters_querystring %}&{% endif %}sort=-due_date">Due date &darr;</a>
+        <a class="{% if sort == 'priority' %}active{% endif %}" href="?{{ filters_querystring }}{% if filters_querystring %}&{% endif %}sort=priority">Priority (high first)</a>
+        <a class="{% if sort == '-created_at' %}active{% endif %}" href="?{{ filters_querystring }}{% if filters_querystring %}&{% endif %}sort=-created_at">Newest</a>
+    </div>
+
     <ul class="task-list">
         {% for task in tasks %}
-            <li class="task {% if task.is_completed %}completed{% endif %}">
-                <a class="task-title" href="{% url 'task-detail' task.pk %}">{{ task.title }}</a>
-                <span class="status {% if task.is_completed %}done{% else %}pending{% endif %}">
-                    {% if task.is_completed %}Done{% else %}Pending{% endif %}
-                </span>
+            <li class="task {% if task.status == 'completed' %}completed{% endif %}">
+                <div class="task-main">
+                    <a class="task-title" href="{% url 'task-detail' task.pk %}">{{ task.title }}</a>
+                    <div class="task-badges">
+                        <span class="badge priority-{{ task.priority }}">{{ task.get_priority_display }}</span>
+                        <span class="badge status-{{ task.status }}">{{ task.get_status_display }}</span>
+                        {% if task.category %}
+                            <span class="badge category-badge">{{ task.category.name }}</span>
+                        {% endif %}
+                        {% if task.is_overdue %}
+                            <span class="badge badge-overdue">Overdue</span>
+                        {% endif %}
+                        {% if task.due_date %}
+                            <span class="task-due">Due {{ task.due_date }}</span>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <form method="post" action="{% url 'task-toggle' task.pk %}" class="toggle-form">
+                    {% csrf_token %}
+                    <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                    {% if task.status == 'completed' %}
+                        <button type="submit" class="btn btn-secondary btn-sm">Reopen</button>
+                    {% else %}
+                        <button type="submit" class="btn btn-primary btn-sm">Complete</button>
+                    {% endif %}
+                </form>
             </li>
         {% empty %}
-            <li class="empty">No tasks yet.</li>
+            <li class="empty">
+                {% if search or selected_status or selected_priority or selected_category or overdue_only %}
+                    No tasks match your filters. <a href="{% url 'task-list' %}">Clear filters</a>.
+                {% else %}
+                    No tasks yet. <a href="{% url 'task-create' %}">Add your first task</a>.
+                {% endif %}
+            </li>
         {% endfor %}
     </ul>
+
+    {% if page_obj.paginator.num_pages > 1 %}
+        <div class="pagination">
+            {% if page_obj.has_previous %}
+                <a href="?{{ querystring }}{% if querystring %}&{% endif %}page={{ page_obj.previous_page_number }}">&larr; Previous</a>
+            {% endif %}
+            <span class="pagination-current">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+            {% if page_obj.has_next %}
+                <a href="?{{ querystring }}{% if querystring %}&{% endif %}page={{ page_obj.next_page_number }}">Next &rarr;</a>
+            {% endif %}
+        </div>
+    {% endif %}
 {% endblock %}

@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}Delete Category{% endblock %}
+
+{% block content %}
+    <a class="back-link" href="{% url 'category-list' %}">&larr; Back to categories</a>
+
+    <div class="task-card">
+        <h1>Delete category</h1>
+        <p class="description">
+            Are you sure you want to delete "{{ category }}"?
+            Tasks in this category will not be deleted — they'll just become uncategorized.
+        </p>
+
+        <form method="POST">
+            {% csrf_token %}
+            <div class="form-actions">
+                <button type="submit" class="btn btn-danger">Confirm delete</button>
+                <a class="btn btn-secondary" href="{% url 'category-list' %}">Cancel</a>
+            </div>
+        </form>
+    </div>
+{% endblock %}

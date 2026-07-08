@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}Categories{% endblock %}
+
+{% block content %}
+    <div class="page-header">
+        <h1>Categories</h1>
+        <a class="btn btn-primary" href="{% url 'category-create' %}">+ Add category</a>
+    </div>
+
+    <ul class="task-list">
+        {% for category in categories %}
+            <li class="task">
+                <div class="task-main">
+                    <span class="task-title">{{ category.name }}</span>
+                    <div class="task-badges">
+                        <span class="task-due">{{ category.task_count }} task{{ category.task_count|pluralize }}</span>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <a class="btn btn-secondary btn-sm" href="{% url 'category-update' category.pk %}">Edit</a>
+                    <a class="btn btn-danger btn-sm" href="{% url 'category-delete' category.pk %}">Delete</a>
+                </div>
+            </li>
+        {% empty %}
+            <li class="empty">No categories yet. <a href="{% url 'category-create' %}">Create your first category</a>.</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

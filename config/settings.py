@@ -46,6 +46,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -118,11 +119,22 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
+# Default primary key fie
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
 STATIC_URL = "static/"
 STATICFILES_DIRS = [BASE_DIR / "static"]
 LOGOUT_REDIRECT_URL = "login"
 
-# Default primary key fie
+STATIC_ROOT = BASE_DIR / "staticfiles"
+STORAGES = {
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
+
+
+
 SESSION_COOKIE_SECURE = env.bool(
     "SESSION_COOKIE_SECURE",
     default=False,
@@ -142,3 +154,4 @@ SECURE_HSTS_SECONDS = env.int(
     "SECURE_HSTS_SECONDS",
     default=0,
 )
+

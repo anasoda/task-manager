@@ -18,7 +18,7 @@
 
         <nav class="auth-nav">
             {% if user.is_authenticated %}
-                <span class="auth-user">Hi, {{ user.username }}</span>
+                <span class="auth-user">Hi, Welcome {{ user.username }}</span>
                 <form method="post" action="{% url 'logout' %}" class="logout-form">
                     {% csrf_token %}
                     <button type="submit" class="logout-btn">Log out</button>

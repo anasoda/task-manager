@@ -383,3 +383,125 @@ dl.meta dd { margin: 0; }
 .logout-btn:hover {
     color: var(--danger);
 }
+
+/* Auth pages (login/register) */
+.auth-page {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 40px;
+}
+
+.auth-card {
+    width: 100%;
+    max-width: 400px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-md);
+    padding: 40px 36px;
+    text-align: center;
+}
+
+.auth-icon {
+    width: 48px;
+    height: 48px;
+    margin: 0 auto 16px;
+    border-radius: 12px;
+    background: rgba(79, 70, 229, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+}
+
+.auth-card h1 {
+    font-size: 1.4rem;
+    margin: 0 0 6px;
+}
+
+.auth-subtitle {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin: 0 0 28px;
+}
+
+.auth-form {
+    text-align: left;
+}
+
+.auth-form p {
+    margin: 0 0 18px;
+    display: flex;
+    flex-direction: column;
+}
+
+.auth-form label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 6px;
+}
+
+.auth-form input {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-family: inherit;
+    color: var(--text);
+    background: #fafbfc;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+
+.auth-form input:focus {
+    outline: none;
+    border-color: var(--primary);
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+}
+
+.auth-form .helptext {
+    display: block;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-top: 4px;
+}
+
+.auth-form .helptext ul {
+    margin: 4px 0 0;
+    padding-left: 18px;
+}
+
+.auth-form ul.errorlist {
+    list-style: none;
+    padding: 0;
+    margin: 6px 0 0;
+    color: var(--danger);
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.auth-submit {
+    width: 100%;
+    margin-top: 8px;
+    padding: 12px;
+    font-size: 0.95rem;
+}
+
+.auth-switch {
+    margin: 24px 0 0;
+    font-size: 0.88rem;
+    color: var(--text-muted);
+}
+
+.auth-switch a {
+    color: var(--primary);
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.auth-switch a:hover {
+    text-decoration: underline;
+}

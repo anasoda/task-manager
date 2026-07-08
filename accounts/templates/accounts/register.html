@@ -1,10 +1,21 @@
 {% extends "base.html" %}
 
+{% block title %}Register{% endblock %}
+
 {% block content %}
-<h2>Register</h2>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Create account</button>
-</form>
+<div class="auth-page">
+    <div class="auth-card">
+        <div class="auth-icon">&#10024;</div>
+        <h1>Create your account</h1>
+        <p class="auth-subtitle">Start organizing your tasks in minutes.</p>
+
+        <form method="post" class="auth-form">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-primary auth-submit">Create account</button>
+        </form>
+
+        <p class="auth-switch">Already have an account? <a href="{% url 'login' %}">Log in</a></p>
+    </div>
+</div>
 {% endblock %}
